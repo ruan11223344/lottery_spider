@@ -70,7 +70,7 @@ class LocalConfig(Config):
 	mysql_password = 'Qq421566927'
 	mysql_hostname = '127.0.0.1:3306'
 	mysql_database = 'live_lottery'
-	mysql_charset = 'utf8'
+	mysql_charset = 'utf8mb4'
 	mysql_echo = False
 	redis_host = '127.0.0.1'
 	redis_port = 6379
@@ -78,13 +78,16 @@ class LocalConfig(Config):
 
 
 class ProductConfig(Config):
-	local_host = "172.19.10.169"
-	mysql_user = 'heyshow_new'
-	mysql_password = 'Ylhd1201$#@!'
-	mysql_hostname = '172.19.10.169:3307'
-	mysql_database = 'heyshow_new'
+	local_host = "127.0.0.1"
+	mysql_user = 'live_lottery'
+	mysql_password = 'Qq421566927'
+	mysql_hostname = '127.0.0.1:3306'
+	mysql_database = 'live_lottery'
 	mysql_charset = 'utf8mb4'
 	mysql_echo = False
+	redis_host = '127.0.0.1'
+	redis_port = 6379
+	redis_password = None
 
 
 config = {
@@ -92,4 +95,4 @@ config = {
 	'online': ProductConfig,
 }
 
-CurrentConfig = config['offline']
+CurrentConfig = config['online']
