@@ -1,4 +1,5 @@
 #!/bin/sh
+source ../venv/bin/activate
 platformlist="douyu egame"
 for platform in $platformlist;do
 platform_id=`ps -ef |grep $platform | grep lottery_main.py | grep -v grep|awk '{print $2}'`
