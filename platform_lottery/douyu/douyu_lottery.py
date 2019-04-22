@@ -27,7 +27,7 @@ class DouyuLottery(BaseLottery):
 		self.start_time = time.time()
 
 	def get_all_rooms(self):
-		jobs = [gevent.spawn(self.scrapy, Config.lottery_list.format(page=i+1)) for i in range(1,10)]
+		jobs = [gevent.spawn(self.scrapy, Config.lottery_list.format(page=i+1)) for i in range(0,10)]
 		gevent.joinall(jobs)
 		for job in jobs:
 			if job.value:
@@ -52,6 +52,8 @@ class DouyuLottery(BaseLottery):
 
 	def scapy_lottery_room(self):
 		lottery_rooms = self.get_lottery_rooms()
+		unique_list = lambda x, y: x if y in x else x + [y]
+		lottery_rooms = reduce(unique_list, [[], ] + lottery_rooms)
 		jobs = [gevent.spawn(self.scrapy, Config.lottery_url.format(roomid=roomItem['roomId'])) for roomItem in lottery_rooms]
 		gevent.joinall(jobs)
 		for job in jobs:
@@ -89,8 +91,38 @@ class DouyuLottery(BaseLottery):
 			print e
 			LOG.error("update platform info failed {msg}".format(msg=e.message))
 
+	def get_roomInfo(self):
+		roomInfoDict = {}
+		roomInfoList = []
+		for content in self.scapy_room_info():
+			if content:
+				roomInfo = content.json()
+				roomInfoList.append(roomInfo[u'data'])
+				roomInfoDict[str(roomInfo[u'data'][u'room_id'])] = len(roomInfoList) - 1
+
+		for lottery_data in self.lottery_datas:
+			data_key = roomInfoDict[str(lottery_data['room_id'])]
+			itemData = roomInfoList[data_key]
+			lottery_data['avatar'] = itemData[u'owner_avatar']
+			lottery_data['anchor_name'] = itemData[u'nickname']
+			lottery_data['location'] = "https://www.douyu.com/"+str(itemData[u'room_id'])
+
+	def scapy_room_info(self):
+		jobs = [gevent.spawn(self.scrapy, Config.room_info.format(roomid=roomItem['room_id'])) for roomItem in
+				self.lottery_datas]
+		gevent.joinall(jobs)
+		for job in jobs:
+			if job.value:
+				if not job.value.content:
+					pass
+				else:
+					yield job.value
+			else:
+				pass
+
 	def run(self):
 		self.get_lotteryInfo()
+		self.get_roomInfo()
 		self.update_lottery()
 		LOG.info('总共{total_page}页，失败{fail_page}页，总共{total_lottery_room}间直播抽奖，失败{fail_lottery_room}间,耗时{times}'.format(total_page=self.total_page,fail_page=self.fail_page,total_lottery_room=self.total_lottery_room,fail_lottery_room=self.fail_lottery_room,times=str(time.time()-self.start_time)))
 

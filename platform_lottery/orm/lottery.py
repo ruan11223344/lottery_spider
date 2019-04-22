@@ -19,5 +19,8 @@ class Lottery(Base):
 	platform = Column(VARCHAR(20), nullable=False, comment=u'直播平台')
 	lottery_time = Column(Integer(), nullable=False, comment=u'开奖时间')
 	condition = Column(VARCHAR(200), nullable=False, comment=u'参与条件')
+	location = Column(VARCHAR(255), nullable=True, comment=u'url地址')
+	avatar = Column(VARCHAR(255), nullable=True, comment=u'头像地址')
+	anchor_name = Column(VARCHAR(255), nullable=True, comment=u'主播名称')
 	members = Column(Integer(), default=0, comment=u'参与人数')
 	create_time = Column(DateTime(timezone=True), server_default=func.now(), comment=u'创建时间')

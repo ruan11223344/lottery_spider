@@ -95,4 +95,4 @@ config = {
 	'online': ProductConfig,
 }
 
-CurrentConfig = config['online']
+CurrentConfig = config['offline']

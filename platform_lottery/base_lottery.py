@@ -29,6 +29,9 @@ class BaseLottery(object):
 		self.total_lottery_room = 0
 		self.fail_lottery_room = 0
 		# --------------------------
+		self.location = u''
+		self.avatar = u''
+		self.anchor_name = u''
 		self.roomid = u''
 		self.lottery_prize = u''
 		self.platform = u''
@@ -69,9 +72,13 @@ class BaseLottery(object):
 				'lottery_time': self.lottery_time,
 				'condition': self.lottery_condition,
 				'members': self.lottery_members,
+				'avatar': self.avatar,
+				'anchor_name': self.anchor_name,
+				'location': self.location,
 			}
 
 		)
+
 
 	def update_lottery(self):
 		session = DB_Session()
@@ -94,6 +101,9 @@ class BaseLottery(object):
 				lottery.platform = data['platform']
 				lottery.lottery_time = data['lottery_time']
 				lottery.condition = data['condition']
+				lottery.avatar = data['avatar']
+				lottery.anchor_name = data['anchor_name']
+				lottery.location = data['location']
 			lottery.members = data['members']
 			try:
 				session.add(lottery)
