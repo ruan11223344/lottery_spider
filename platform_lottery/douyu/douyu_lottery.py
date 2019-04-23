@@ -101,11 +101,14 @@ class DouyuLottery(BaseLottery):
 				roomInfoDict[str(roomInfo[u'data'][u'room_id'])] = len(roomInfoList) - 1
 
 		for lottery_data in self.lottery_datas:
-			data_key = roomInfoDict[str(lottery_data['room_id'])]
-			itemData = roomInfoList[data_key]
-			lottery_data['avatar'] = itemData[u'owner_avatar']
-			lottery_data['anchor_name'] = itemData[u'nickname']
-			lottery_data['location'] = "https://www.douyu.com/"+str(itemData[u'room_id'])
+			try:
+				data_key = roomInfoDict[str(lottery_data['room_id'])]
+				itemData = roomInfoList[data_key]
+				lottery_data['avatar'] = itemData[u'owner_avatar']
+				lottery_data['anchor_name'] = itemData[u'nickname']
+				lottery_data['location'] = "https://www.douyu.com/"+str(itemData[u'room_id'])
+			except Exception as e:
+				print(e)
 
 	def scapy_room_info(self):
 		jobs = [gevent.spawn(self.scrapy, Config.room_info.format(roomid=roomItem['room_id'])) for roomItem in
