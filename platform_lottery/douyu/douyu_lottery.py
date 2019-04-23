@@ -27,7 +27,7 @@ class DouyuLottery(BaseLottery):
 		self.start_time = time.time()
 
 	def get_all_rooms(self):
-		jobs = [gevent.spawn(self.scrapy, Config.lottery_list.format(page=i+1)) for i in range(0,10)]
+		jobs = [gevent.spawn(self.scrapy, Config.lottery_list.format(page=i+1)) for i in range(0,25)]
 		gevent.joinall(jobs)
 		for job in jobs:
 			if job.value:
