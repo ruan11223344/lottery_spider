@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+import os,platform
 from sqlalchemy.ext.declarative import declarative_base
 import requests
 import time
@@ -95,4 +95,4 @@ config = {
 	'online': ProductConfig,
 }
 
-CurrentConfig = config['offline']
+CurrentConfig = config['offline'] if platform.system() != "Linux" else config['online']
