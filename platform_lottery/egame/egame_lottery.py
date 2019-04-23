@@ -101,6 +101,10 @@ class EgameLottery(BaseLottery):
                     self.roomid = content.get('lottery_id').split('_')[1]
                     self.platform = Config.platform
                     self.lottery_time=content.get('lottery_tm')
+                    self.location = 'https://egame.qq.com/'+str(content['creater']['uid'])
+                    self.avatar = str(content['creater']['face_url'])
+                    self.anchor_name = str(content['creater']['nick'])
+
                     if content.get('conds')[1].get('title') == u'赠送礼物':
                         self.lottery_condition=json.dumps({"giftid": content['conds'][1]["info"]['gift_id'],"num": content['conds'][1]["info"]["num"],"prize_num": content['prize']['total']})
                     elif content.get('conds')[1].get('title') == u'发送口令':

@@ -25,4 +25,4 @@ class DYConfig(config.CurrentConfig):
 	lottery_url = "https://www.douyu.com/member/lottery/activity_info?room_id={roomid}"
 	lottery_list = "https://www.douyu.com/japi/weblist/apinc/rec/lottery?num=20&page={page}"
 	room_info = "https://www.douyu.com/swf_api/h5room/{roomid}"
-	crawl_frequency = 30
+	crawl_frequency = 90
